@@ -1,0 +1,73 @@
+﻿@model AnnouncementViewModel
+@{
+    ViewData["Title"] = "Додати оголошення";
+    var categories = (Dictionary<string, List<string>>)ViewBag.Categories;
+}
+
+<h2 class="mb-4">Додати оголошення</h2>
+
+<form asp-action="Create" method="post" class="needs-validation" novalidate>
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-select">
+            <option value="true">Активне</option>
+            <option value="false">Неактивне</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" id="categorySelect" class="form-select">
+            <option value="">Оберіть категорію</option>
+            @foreach (var cat in categories.Keys)
+            {
+                <option value="@cat">@cat</option>
+            }
+        </select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SubCategory" class="form-label"></label>
+        <select asp-for="SubCategory" id="subcategorySelect" class="form-select">
+            <option value="">Оберіть підкатегорію</option>
+        </select>
+        <span asp-validation-for="SubCategory" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const allCategories = @Html.Raw(Json.Serialize(ViewBag.Categories));
+        const categorySelect = document.getElementById('categorySelect');
+        const subcategorySelect = document.getElementById('subcategorySelect');
+
+        categorySelect.addEventListener('change', function () {
+            const subcats = allCategories[this.value] || [];
+            subcategorySelect.innerHTML = '<option value="">Оберіть підкатегорію</option>';
+            subcats.forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub;
+                opt.textContent = sub;
+                subcategorySelect.appendChild(opt);
+            });
+        });
+    </script>
+}

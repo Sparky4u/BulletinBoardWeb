@@ -1,0 +1,15 @@
+﻿@model AnnouncementViewModel
+
+<h2>Додати оголошення</h2>
+
+<form asp-action="Create" method="post">
+    <input asp-for="Title" placeholder="Заголовок" /><br />
+    <textarea asp-for="Description" placeholder="Опис"></textarea><br />
+    <select asp-for="Status">
+        <option value="true">Активне</option>
+        <option value="false">Неактивне</option>
+    </select><br />
+    <input asp-for="Category" placeholder="Категорія" /><br />
+    <input asp-for="SubCategory" placeholder="Підкатегорія" /><br />
+    <button type="submit">Зберегти</button>
+</form>
